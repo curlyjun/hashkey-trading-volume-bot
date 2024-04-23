@@ -4,7 +4,7 @@ import "dotenv/config";
 const myAxios = axios.create({
   baseURL: "https://api-pro.sim.hashkeydev.com",
   headers: {
-    "X-HK_APIKEY": process.env.API_KEY,
+    "X-HK-APIKEY": process.env.API_KEY,
   },
 });
 
