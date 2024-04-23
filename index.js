@@ -20,7 +20,7 @@ async function getBTCUSD() {
   try {
     const url = `${GET_SYMBOL_PRICE}?symbol=BTCUSDC`;
 
-    const { data } = await axios.get(url);
+    const { data } = await myAxios.get(url);
     return data[0].p;
   } catch (error) {
     console.error("getBTCUSDC error: ", error);
