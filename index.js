@@ -29,7 +29,14 @@ async function getBTCUSD() {
 
 async function getAccountInfo() {
   try {
-    const { data } = await myAxios.get(GET_ACCOUNT_INFO);
+    const searchParams = new URLSearchParams({
+      timestamp: new Date().getTime(),
+      signature: process.env.SIGNATURE,
+    });
+
+    const { data } = await myAxios.get(
+      `${GET_ACCOUNT_INFO}?${searchParams.toString()}`
+    );
     console.log("account", data);
     return data;
   } catch (error) {
