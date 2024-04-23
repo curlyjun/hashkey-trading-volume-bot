@@ -1,10 +1,11 @@
 import axios from "axios";
+import CryptoJS from "crypto-js";
 import "dotenv/config";
 
 const myAxios = axios.create({
   baseURL: "https://api-pro.sim.hashkeydev.com",
   headers: {
-    "X-HK-APIKEY": process.env.API_KEY,
+    "X-HK-APIKEY": process.env.ACCESS_KEY,
   },
 });
 
@@ -29,18 +30,21 @@ async function getBTCUSD() {
 
 async function getAccountInfo() {
   try {
-    const searchParams = new URLSearchParams({
-      timestamp: new Date().getTime(),
-      signature: process.env.SIGNATURE,
-    });
+    const timestamp = new Date().getTime().toString();
 
-    const { data } = await myAxios.get(
-      `${GET_ACCOUNT_INFO}?${searchParams.toString()}`
-    );
+    const { data } = await myAxios.get(GET_ACCOUNT_INFO, {
+      params: {
+        timestamp: timestamp,
+        signature: CryptoJS.HmacSHA256(
+          `timestamp=${timestamp}`,
+          process.env.SECRET_KEY
+        ).toString(),
+      },
+    });
     console.log("account", data);
     return data;
   } catch (error) {
-    console.error("getAccountInfo error: ", error);
+    console.error("getAccountInfo error", error);
   }
 }
 
